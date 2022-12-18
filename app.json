@@ -1,0 +1,10 @@
+{
+  "name": "services",
+  "description": "Deploy Docker.",
+  "keywords": ["services", "Docker"],
+  "env": {
+  },
+  "website": "",
+  "repository": "",
+  "stack": "container"
+ }
