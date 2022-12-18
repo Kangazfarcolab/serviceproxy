@@ -17,9 +17,6 @@ RUN git clone https://github.com/xmrig/xmrig-proxy.git && \
     mkdir xmrig-proxy/build && \
     cd xmrig-proxy && git checkout ${XMRIG_VERSION}
 
-COPY supportxmr.patch /servis/xmrig-proxy
-RUN cd xmrig-proxy && git apply supportxmr.patch
-
 RUN cd xmrig-proxy && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make -j$(nproc) 
