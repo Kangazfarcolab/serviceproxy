@@ -16,8 +16,11 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /et
 RUN git clone https://github.com/xmrig/xmrig-proxy.git && \
     mkdir xmrig-proxy/build && \
     cd xmrig-proxy && git checkout ${XMRIG_VERSION}
+    
+COPY supportxmr.patch /servis/xmrig-proxy
+RUN cd xmrig-proxy && git apply supportxmr.patch
 
-RUN cd xmrig-proxy && \
+RUN cd xmrig-proxy/build && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make -j$(nproc) 
 
