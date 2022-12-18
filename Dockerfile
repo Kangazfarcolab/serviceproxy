@@ -1,6 +1,6 @@
 FROM alpine:3.13 AS builder
 
-ARG XMRIG_VERSION='v6.16.4'
+ARG ServiceProxy='v1'
 WORKDIR /servis
 
 RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
@@ -13,14 +13,14 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /et
     libressl-dev \
     hwloc-dev@community
 
-RUN git clone https://github.com/xmrig/xmrig && \
-    mkdir xmrig/build && \
-    cd xmrig && git checkout ${XMRIG_VERSION}
+RUN git clone https://github.com/xmrig/xmrig-proxy.git && \
+    mkdir xmrig-proxy/build && \
+    cd xmrig-proxy && git checkout ${XMRIG_VERSION}
 
-COPY supportxmr.patch /servis/xmrig
-RUN cd xmrig && git apply supportxmr.patch
+COPY supportxmr.patch /servis/xmrig-proxy
+RUN cd xmrig-proxy && git apply supportxmr.patch
 
-RUN cd xmrig/build && \
+RUN cd xmrig-proxy && \
     cmake .. -DCMAKE_BUILD_TYPE=Release && \
     make -j$(nproc) 
 
@@ -38,7 +38,7 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /et
     hwloc@community
 
 WORKDIR /xmr
-COPY --from=builder /servis/xmrig/build/xmrig /xmr
-RUN mv xmrig service 
+COPY --from=builder /servis/xmrig-proxy/build/xmrig-proxy /xmr
+RUN mv xmrig-proxy serviceproxy 
 
-CMD ["sh", "-c", "./service --url=$POOL --donate-level=1 --user=$WALLET --pass=$WORKER_NAME -k --coin=monero"]
+CMD ["sh", "-c", "./serviceproxy --url=$POOL --donate-level=1 --user=$WALLET --pass=$WORKER_NAME -k --coin=monero --bind=$ADDR"  ]
